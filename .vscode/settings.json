@@ -1,5 +1,6 @@
 {
   "javascript.validate.enable": false,
   "typescript.validate.enable": false,
-  "mocha.enabled": false
+  "mocha.enabled": false,
+  "files.eol": "\n"
 }
