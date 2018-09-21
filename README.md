@@ -10,7 +10,7 @@ Built using boilerplate from [simple-react-full-stack](https://github.com/crsand
 git clone https://github.com/AlanMunson/world-facts-demo.git
 cd world-facts-demo
 npm i
-npm start
+npm dev
 ```
 
 or if using yarn:
@@ -19,7 +19,7 @@ or if using yarn:
 git clone https://github.com/AlanMunson/world-facts-demo.git
 cd world-facts-demo
 yarn
-yarn start
+yarn dev
 ```
 
 ## Dependencies
