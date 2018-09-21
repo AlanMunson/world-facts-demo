@@ -6,6 +6,7 @@ const dataDir = path.join(__dirname, "../..", "data");
 const countriesDir = path.join(dataDir, "countries");
 
 app.use(express.static("dist"));
+app.use(express.static("images"));
 app.get("/api/countries", (req, res) =>
   res.sendFile(path.join(dataDir, "countries.json"))
 );

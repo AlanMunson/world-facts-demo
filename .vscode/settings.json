@@ -2,5 +2,9 @@
   "javascript.validate.enable": false,
   "typescript.validate.enable": false,
   "mocha.enabled": false,
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "eslint.alwaysShowStatus": true,
+  "eslint.autoFixOnSave": true,
+  "editor.formatOnSave": true,
+  "prettier.eslintIntegration": true
 }

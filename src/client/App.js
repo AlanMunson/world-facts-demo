@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import request from "superagent";
-import "./App.css";
+import "bootstrap";
+import "./styles/app.css";
+import "./images/spinner.svg";
 
 class App extends Component {
   constructor(props) {
@@ -53,32 +55,59 @@ class App extends Component {
 
   render() {
     const { countries, countryData, selectedCountryCode } = this.state;
-    const message =
-      countries && countries.length
-        ? `Countries fetched: ${(countries || []).length}`
-        : "Loading...";
+    const countriesLoaded = countries && countries.length;
+    const message = countriesLoaded
+      ? `Data is available for ${(countries || []).length} countries!`
+      : "Loading country data...";
     return (
-      <div className="App">
-        <h3>World Facts Demo</h3>
-        <div>{message}</div>
-        <div>
-          <label htmlFor="country-code">Enter country code</label>
-          <input
-            id="country-code"
-            name="country-code"
-            value={selectedCountryCode}
-            onChange={this.countryCodeOnChange}
-          />
-          <button onClick={this.onSelectCountry}>Select</button>
+      <div className="container app">
+        <div className="app-header row">
+          <h1>World Facts Demo</h1>
+          <div>{message}</div>
         </div>
-        <div>
-          <div>{this.countryName()}</div>
-          <div>{this.countryBackground()}</div>
-          {/* <textarea rows={10} value={JSON.stringify(countryData)} /> */}
-        </div>
+        {!countriesLoaded ? (
+          <Spinner show={!countriesLoaded} />
+        ) : (
+          <div className="app-body row">
+            <form className="form-inline">
+              <div className="form-group">
+                <label for="country-code" className="country-code-label">
+                  Enter country code
+                </label>
+                <input
+                  id="country-code"
+                  name="country-code"
+                  type="text"
+                  className="form-control country-code"
+                  placeholder="Enter two-digit country code"
+                  value={selectedCountryCode}
+                  onChange={this.countryCodeOnChange}
+                />
+                <button
+                  type="button"
+                  className="btn btn-primary btn-select-country"
+                  onClick={this.onSelectCountry}
+                >
+                  Select
+                </button>
+              </div>
+              <div className="form-group">
+                <h3>{this.countryName()}</h3>
+                <h4>{this.countryBackground()}</h4>
+                {/* <textarea rows={10} value={JSON.stringify(countryData)} /> */}
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     );
   }
 }
+
+const Spinner = () => (
+  <div className="spinner">
+    <img src="dist/images/spinner.svg" className="spinner-image" />
+  </div>
+);
 
 export default App;
