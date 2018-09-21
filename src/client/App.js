@@ -1,27 +1,84 @@
 import React, { Component } from "react";
-import "./app.css";
-import ReactImage from "./react.png";
+import request from "superagent";
+import "./App.css";
 
-export default class App extends Component {
-  state = { username: null };
+class App extends Component {
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    fetch("/api/getUsername")
-      .then(res => res.json())
-      .then(user => this.setState({ username: user.username }));
+    this.state = {
+      countries: null,
+      selectedCountryCode: "",
+      countryData: null
+    };
+    this.getCountryData.bind(this);
   }
 
+  async componentDidMount() {
+    if (!this.state.countries) {
+      const response = await request.get("/api/countries").accept("JSON");
+      this.setState({ countries: response.body || null });
+    }
+  }
+
+  async getCountryData() {
+    const { selectedCountryCode } = this.state;
+    if (selectedCountryCode && selectedCountryCode.length >= 2) {
+      const response = await request
+        .get(`/api/country/${selectedCountryCode.substring(0, 2)}`)
+        .accept("JSON");
+      this.setState({ countryData: response.body });
+    }
+  }
+
+  countryCodeOnChange = e => {
+    this.setState({ selectedCountryCode: e.currentTarget.value });
+  };
+
+  onSelectCountry = e => {
+    this.getCountryData();
+  };
+
+  countryName = () =>
+    this.state.countryData
+      ? this.state.countryData.Government["Country name"][
+          "conventional short form"
+        ].text
+      : "";
+
+  countryBackground = () =>
+    this.state.countryData
+      ? this.state.countryData.Introduction.Background.text
+      : "";
+
   render() {
-    const { username } = this.state;
+    const { countries, countryData, selectedCountryCode } = this.state;
+    const message =
+      countries && countries.length
+        ? `Countries fetched: ${(countries || []).length}`
+        : "Loading...";
     return (
-      <div>
-        {username ? (
-          <h1>{`Hello ${username}`}</h1>
-        ) : (
-          <h1>Loading.. please wait!</h1>
-        )}
-        <img src={ReactImage} alt="react" />
+      <div className="App">
+        <h3>World Facts Demo</h3>
+        <div>{message}</div>
+        <div>
+          <label htmlFor="country-code">Enter country code</label>
+          <input
+            id="country-code"
+            name="country-code"
+            value={selectedCountryCode}
+            onChange={this.countryCodeOnChange}
+          />
+          <button onClick={this.onSelectCountry}>Select</button>
+        </div>
+        <div>
+          <div>{this.countryName()}</div>
+          <div>{this.countryBackground()}</div>
+          {/* <textarea rows={10} value={JSON.stringify(countryData)} /> */}
+        </div>
       </div>
     );
   }
 }
+
+export default App;
