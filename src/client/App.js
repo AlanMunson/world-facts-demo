@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import request from "superagent";
 import "bootstrap";
 import "./styles/app.css";
-import "./images/spinner.svg";
+import SpinnerImage from "./images/spinner.svg";
 
 class App extends Component {
   constructor(props) {
@@ -106,7 +106,7 @@ class App extends Component {
 
 const Spinner = () => (
   <div className="spinner">
-    <img src="dist/images/spinner.svg" className="spinner-image" />
+    <img src={SpinnerImage} className="spinner-image" />
   </div>
 );
 
